@@ -67,3 +67,21 @@ parse_data.py is the accumulation of all my Python Functions that I've used to m
 
 I've got a lot of different .py files that kind of do the same thing. This is because I found it easier to restart some of the code, rather than edit pre-existing code. This may just be 
 a bad habit of mine, but I'll list the working ones that anyone can use if they just change their directory. 
+
+
+To run the most important file (comparing our Sel. Deaths to Ne and to Joseph's BGS), it will be named
+"seldeath-combined.ipynb". It will be the bottom-most cell.
+- Before running these programs, make sure that you've updated the home directory in the parse_data.py file. 
+- To run these cells, first run the top cell if you've never ran it before. This is to calculate Coalescent Ne
+- After running the cells more than once, you can just run the 2nd cell from the top. 
+- After this, you should have no issues running the cells. The most updated file (seldeath-combined.ipynb) should have no issues running. The others do have some issues, and those can be fixed if you just edit some of the function calls and the parameters. 
+
+
+A lot of the older files just need a few functions to be changed, or a lot of them have errors through file pathings. Generally, as long as you have the correct output and input paths to get data from, they should run. 
+
+Ones that I've tested that work: 
+- seldeathhist-exp.ipynb and plots.ipynb: (You can make this unexponentiated by just changing the function call in cell 2. Change from parse_exp(params) to parse_normal_from_exp(params). Keep in mind, that you need to keep track of the SD, and which files have tskit on. If tskit is on, make sure that the last parameter is True, False if tskit is not on. Then this file should work fine. 
+    - seldeathist-exp.ipynb contains the histogram graphs    
+    - plots.ipynb contains the normal Selective Deaths vs. Timesteps plots.
+
+All the other files are generally irrelevant - and have very specific cases. 
