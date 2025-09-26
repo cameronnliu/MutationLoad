@@ -4,14 +4,6 @@
 # things that I need in the file. If you import this file, you will get all the methods from this file and be able to call it 
 # in another file. 
 
-# Refactor: 
-# 
-# parse(): need to be able to take in a list of sd's (future?)
-#
-#
-
-
-
 import statistics  
 import numpy as np   
 from scipy import stats
@@ -22,6 +14,10 @@ import pandas as pd
 
 
 debug = False
+
+
+# If you want to re-create and use these sims, replace home_directory with the directory where the sims are stored. 
+home_directory = "/Users/cameronliu/Desktop/Research/Datasets"
 
 
 # These methods are used for purely editing and gathering information from the file
@@ -35,10 +31,10 @@ def parse(uds, sd, burnin):
     for ud in uds: 
         if burnin: 
             # sd = 0.01
-            filename = "/Users/cameronliu/Desktop/Research/Datasets/sd-" + str(sd) + "/datafor_relative_tskitstatus_ON_BURNIN_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_0.010000/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"           
+            filename = home_directory + "/sd-" + str(sd) + "/datafor_relative_tskitstatus_ON_BURNIN_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_0.010000/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"           
         else:
             # sd = 0.0025
-            filename = "/Users/cameronliu/Desktop/Research/Datasets/sd-" + str(sd) + "/datafor_relative_tskitstatus_OFF_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_0.002500/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"
+            filename = home_directory + "/sd-" + str(sd) + "/datafor_relative_tskitstatus_OFF_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_0.002500/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"
 
 
         file_data = []
@@ -54,15 +50,15 @@ def parse(uds, sd, burnin):
     return data, timesteps
 
 
-
+# This parses the exponential data from the data files. 
 def parse_exp(uds, sd, tskit): 
     data = []
     timesteps = []
     for ud in uds: 
         if tskit: # Has tskit on
-            filename = "/Users/cameronliu/Desktop/Research/Datasets/sd-" + str(sd) + "-exp-reformatted/datafor_relative_tskitstatus_ON_BURNIN_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_" + str(sd) + "00/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"
+            filename = home_directory + "/sd-" + str(sd) + "-exp-reformatted/datafor_relative_tskitstatus_ON_BURNIN_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_" + str(sd) + "00/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"
         else: # Has tskit of
-            filename = "/Users/cameronliu/Desktop/Research/Datasets/sd-" + str(sd) + "-exp-reformatted/datafor_relative_tskitstatus_OFF_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_" + str(sd) + "0000/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"
+            filename = home_directory + "/sd-" + str(sd) + "-exp-reformatted/datafor_relative_tskitstatus_OFF_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_" + str(sd) + "0000/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"
         
 
         file_data = []
@@ -78,7 +74,8 @@ def parse_exp(uds, sd, tskit):
         print(f"------------------------------------------------\nSuccessfully Parsed Exponential Data for file SD = {sd}, UD = {ud}\n------------------------------------------------\n")
     return data, timesteps
 
-
+# This function parses the normal data from the Exponentiated Datafiles. 
+# This is becuase Ulises and I were testing the Exponentiated Datasets.
 def parse_normal_from_exp(uds, sd, tskit): 
     data = []
     timesteps = []
@@ -99,56 +96,10 @@ def parse_normal_from_exp(uds, sd, tskit):
         print(f"---------------------------------------------------------\nSuccessfully Parsed Normal Data for file SD = {sd}, UD = {ud}\n---------------------------------------------------------\n")
     return data, timesteps
 
-def parse_exponential(uds, sd, tskit): 
-    data = []
-    timesteps = []
-    for ud in uds: 
 
-        filename = get_directory_no_curr(ud, sd, tskit, False)
-
-        file_data = []
-        with open(filename, "r") as file:
-            next(file) # skips the first line
-            for line in file: 
-                line = line.strip().split(",")
-                if len(timesteps) < 20000: # Skips adding after the 0 - 20,000 timesteps
-                    timesteps.append(line[0])
-                if not debug:
-                    file_data.append(float(line[4]))
-            data.append(("sd-" + str(sd), (ud, file_data)))
-        print(f"------------------------------------------------------------------\nSuccessfully Parsed Exponential Data for file SD = {sd}, UD = {ud}\n------------------------------------------------------------------\n")
-    return data, timesteps
-
-
-
-
-
-
-# ? Forgot what this is for, I believe it's the same as parse_exp ?
-def parse_exp_old(uds, sd, tskit): 
-    data = []
-    timesteps = []
-    for ud in uds: 
-        if tskit: # Has tskit on
-            filename = "/Users/cameronliu/Desktop/Research/Datasets/sd-" + str(sd) + "-exp-reformatted/datafor_relative_tskitstatus_ON_BURNIN_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_" + str(sd) + "00/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"
-        else: # Has tskit off
-            filename = "/Users/cameronliu/Desktop/Research/Datasets/sd-" + str(sd) + "-exp-reformatted/datafor_relative_tskitstatus_OFF_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_" + str(sd) + "0000/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"
-        
-
-        file_data = []
-        with open(filename, "r") as file:
-            next(file) # skips the first line
-            for line in file: 
-                line = line.strip().split(",")
-                if len(timesteps) < 20000: # Skips adding after the 0 - 20,000 timesteps
-                    timesteps.append(line[0])
-                file_data.append(float(line[4]))
-            data.append(("sd-" + str(sd), (ud, file_data)))
-        print(f"------------------------------------------------\nSuccessfully Parsed Exponential Data for file SD = {sd}, UD = {ud}\n------------------------------------------------\n")
-    return data, timesteps
-
-
-
+# This function came from a big error in mine: I didn't realize the bash array didn't have commas in it. 
+# Useful to have and keep - it just removes the commas from the name of the files - even the subfiles. 
+# 
 def remove_commas_recursively(root_dir: str):
     message = False
     for dirpath, dirnames, filenames in os.walk(root_dir, topdown=False):
@@ -170,7 +121,6 @@ def remove_commas_recursively(root_dir: str):
                 new_path = os.path.join(dirpath, new_dirname)
                 os.rename(old_path, new_path)
                 print(f"Renamed directory: {old_path} -> {new_path}")
-
     return message
 
             
@@ -207,28 +157,17 @@ def sort_csv(location, sort_by):
 
 
 
-
-
-
+# Takes the moving average
 def moving_average(data, window):
     weights = np.ones(window) / window
     return np.convolve(data, weights, mode='valid')
-
-
-def find_negative(sliced_data):
-        for (sd, (ud, data)) in sliced_data: 
-            if "-" in data: 
-                print("- found in " + str(sd) + " " + str(ud))
-            else: 
-                print("no - found in " + str(sd) + " " + str(ud))
-
 
 
 # Transforms the data, after being given sliced data. 
 def transform_data(sliced_data): 
     transformed_datasets = []
     for (sd, (ud, data)) in sliced_data:
-        transformed_data, transformed_lambda = stats.boxcox(data)
+        transformed_data, transformed_lambda = stats.boxcox(data) # Returns the transformed data, and the lambda respective to the function
         transformed_mean = statistics.mean(transformed_data)
         transformed_datasets.append((sd, (ud, (transformed_data, transformed_lambda, transformed_mean))))
 
@@ -264,9 +203,7 @@ def back_transform_ste(transformed_datasets):
     return back_transformed_data
 
 
-
-
-
+# Generally this should be unused. I am keeping this in here, just so no function editing is needed. 
 def back_div_2(transformed_datasets):
     back_transformed_uds = []
     for ((sd, (ud, (transformed_data, transformed_lambda)))) in transformed_datasets: 
@@ -285,6 +222,7 @@ def calculate_variance_after_selection(ud, sd):
     # ud * (-(sd - 1.0)(sd - 2.0)) * 2(sd - 1.0)
     return np.exp(ud) * ((np.exp(-(sd - 1.0) * (sd - 2.0))) - np.exp(2 * (sd - 1.0)))
 
+# This is the final transformation that the dataset goes through. 
 def transform_nereproductive_rate(back_transformed_uds):
     transformed_data = []
 
@@ -299,6 +237,10 @@ def transform_nereproductive_rate(back_transformed_uds):
 
     return transformed_data
 
+# Back-transform the data, then call calculate_variance..(). Then, call transform_nereproductive_rate(), to get the final back-transformed and applied data. 
+
+
+# This is used to calculate standard error. Not sure where I'm going wrong, but this is for that. Unsure if this works properly 
 def transform_nereproductive_rate_ste(back_transformed_uds):
     transformed_data = []
 
@@ -322,10 +264,7 @@ def transform_nereproductive_rate_ste(back_transformed_uds):
 
 
         
-
-
-
-
+# Not used unless you are using Matheson's msprime data. Typically do not need to use. 
 def get_matheson_dataset(sd):
     # Uses the sd of the file to detemrine which dataset to use
     matheson_dataset = []
@@ -358,16 +297,17 @@ def calculate_matheson_data(uds, sd, linked):
     
     if linked: 
         for ud in uds: 
-            # This equation is incorrect, but it is obselete in my code. 
+            # This equation is incorrect, but it is obselete in my code - never used. 
             matheson_calculated_data.append((ud, np.exp(-4*ud*sd)))
     elif not linked: 
         for ud in uds: 
             matheson_calculated_data.append((ud, float(np.exp(-8 * float(ud) * float(sd)))))
     else: 
         exit 
-    
     return matheson_calculated_data
 
+
+# Calculates the BGS line for matheson's data. 
 def calculate_bgs(uds, sd):
     # Params: 
     # 
@@ -559,22 +499,6 @@ def calculate_all_stes(datasets, size):
         stes.append((sd, (ud, sterror)))
     return stes
 
-
-# transformed_datasets.append((sd, (ud, (transformed_data, transformed_lambda))))
-# def get_bounds(transformed_values, size):
-#     # Iterate through the transformed values, they still need to be back-transformed
-#     all_bounds = []
-#     for sd, (ud, (transformed_data, transformed_lambda, transformed_mean)) in transformed_values: 
-#         ste = calculate_standard_error(transformed_data, size)
-#         print(ud)
-
-#         upper_ste = ste + transformed_mean
-#         lower_ste = transformed_mean - ste
-
-#         all_bounds.append((sd, ud, (lower_ste, upper_ste)))
-#         print("Appended UD " + str(ud))
-#         return all_bounds
-    
 
 def get_bounds(transformed_values, size):
     results = []
