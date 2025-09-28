@@ -61,27 +61,41 @@ cameron.j.liu@gmail.com ; (Professional)
 
 *************************************************************************** Code Explanation ***************************************************************************
 
-parse_data.py is the accumulation of all my Python Functions that I've used to modify data. It can be a bit messy, and if I had more time, I would've gone back and refactor the code. 
-    All the functions in parse_data.py are useful. To get access to these functions, type "import parse_data" at the top of your Python file. To use the functions, first, read how the 
-    respective function works. Then, you can call it using parse_data.function_name(params).
+To properly simulate the graphs that I have, make sure you have all the proper files downloaded. 
 
-I've got a lot of different .py files that kind of do the same thing. This is because I found it easier to restart some of the code, rather than edit pre-existing code. This may just be 
-a bad habit of mine, but I'll list the working ones that anyone can use if they just change their directory. 
+Once you have all the files downloaded, make sure you have the datasets downloaded. They should be called "Datasets.zip". 
+There will be plenty of files. They are sorted by SD, and all of them have Tskit on. Most of the population sizes is 2000, 
+but a few of them (SD = 0.02, 0.04 has a population size of 20000. The other SD, which is 0.01, hasn't been run yet.)
 
+First, go through all the files, and edit the following variables to the directories that you want it to be. 
 
-To run the most important file (comparing our Sel. Deaths to Ne and to Joseph's BGS), it will be named
-"seldeath-combined.ipynb". It will be the bottom-most cell.
-- Before running these programs, make sure that you've updated the home directory in the parse_data.py file. 
-- To run these cells, first run the top cell if you've never ran it before. This is to calculate Coalescent Ne
-- After running the cells more than once, you can just run the 2nd cell from the top. 
-- After this, you should have no issues running the cells. The most updated file (seldeath-combined.ipynb) should have no issues running. The others do have some issues, and those can be fixed if you just edit some of the function calls and the parameters. 
+In parse_data.py, it will be on line 20. Change variable called "home_directory" to what your current directory is. You can open VSCode terminal, and type "pwd". 
+Copy and paste that into the home_directory. 
 
+In "seldeath-hist.ipynb", "seldeath-timeseries.ipynb", and "seldeath-ne.ipynb", change the variable "output_path" to where you want the grapsh to be stored. 
+For example, mine was "/..../cameronliu/Research/.../Selective Death Histograms/". 
 
-A lot of the older files just need a few functions to be changed, or a lot of them have errors through file pathings. Generally, as long as you have the correct output and input paths to get data from, they should run. 
+Now, it's important to get the data for Ne. Run the file called "calculate_coalescent_ne.ipynb". 
+This file takes a bit to run, but it goes through the specified datasets in the parameters "sds = []". Be sure to change these to what you need them to be.
+This file doesn't output anything important, but just stores the relevant Ne's in a file. 
 
-Ones that I've tested that work: 
-- seldeathhist-exp.ipynb and plots.ipynb: (You can make this unexponentiated by just changing the function call in cell 2. Change from parse_exp(params) to parse_normal_from_exp(params). Keep in mind, that you need to keep track of the SD, and which files have tskit on. If tskit is on, make sure that the last parameter is True, False if tskit is not on. Then this file should work fine. 
-    - seldeathist-exp.ipynb contains the histogram graphs    
-    - plots.ipynb contains the normal Selective Deaths vs. Timesteps plots.
+From there, you are finally able to run these scripts. We need to check if the burn-in period for the simulations is long enough. 
+Run "seldeath-timeseries.ipynb", and check if the burnin period that we have specified is long enough, and if the simulation has reached convergence. 
 
-All the other files are generally irrelevant - and have very specific cases. 
+Notice anything? I notice that the data is still pretty noisy, it's got a decent amount of variability. How do we get rid of this? 
+
+So from there, you can run the file "seldeathhist.ipynb". 
+
+We can plot our data in a histogrram to see what our data looks like. We can see that the data is still skewed. 
+To be able to get rid of this skew we must transform the data. To do this, we use the Box-Cox transformations. 
+
+Behind the scenes of these transformations, it basically transforms the dataset using a calculated value called lambda. This value is important later on. 
+
+My code stores lambda and the transformed datasets together. 
+
+From there, the basis of my project is to compare Selective Deaths to Ne. We can plot Ne using our simulations. 
+
+Run the file called "seldeath-ne.ipynb". This file is just comparing Ne vs. Selective Deaths vs. Matheson's background selection equation. 
+This back-transforms the dataset from when we transformed it earlier before plotting anything. This is to get the data in terms that we like. 
+
+From there, that's all I've done for this project! I hope my code and work isn't too messy -- my apologies if it is!!

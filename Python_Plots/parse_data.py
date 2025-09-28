@@ -24,30 +24,7 @@ home_directory = "/Users/cameronliu/Desktop/Research/Datasets"
 
 # This method iterates through the file, and stores the information in a tuple of a tuple, then stores that in a list 
 #
-# It returns this tuple of tuples stored in a list, as well as the timesteps. This is just the raw data, with no slicing                                                                                                                                                                                                                                                                                                            
-def parse(uds, sd, burnin):                                                                                 
-    data = []
-    timesteps = []
-    for ud in uds: 
-        if burnin: 
-            # sd = 0.01
-            filename = home_directory + "/sd-" + str(sd) + "/datafor_relative_tskitstatus_ON_BURNIN_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_0.010000/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"           
-        else:
-            # sd = 0.0025
-            filename = home_directory + "/sd-" + str(sd) + "/datafor_relative_tskitstatus_OFF_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_0.002500/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"
-
-
-        file_data = []
-        with open(filename, "r") as file:
-            next(file) # skips the first line
-            for line in file: 
-                line = line.strip().split(",")
-                if len(timesteps) < 20000: # Skips adding after the 0 - 20,000 timesteps
-                    timesteps.append(line[0])
-                file_data.append(float(line[3]))
-            data.append(("sd-" + str(sd), (ud, file_data)))
-        print(f"------------------------\nSuccessfully Parsed Data for file SD = {sd}, UD = {ud}\n------------------------\n")
-    return data, timesteps
+# It returns this tuple of tuples stored in a list, as well as the timesteps. This is just the raw data, with no slicing  
 
 
 # This parses the exponential data from the data files. 
@@ -57,7 +34,7 @@ def parse_exp(uds, sd, tskit):
     for ud in uds: 
         if tskit: # Has tskit on
             filename = home_directory + "/sd-" + str(sd) + "-exp-reformatted/datafor_relative_tskitstatus_ON_BURNIN_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_" + str(sd) + "00/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"
-        else: # Has tskit of
+        else: # Has tskit off
             filename = home_directory + "/sd-" + str(sd) + "-exp-reformatted/datafor_relative_tskitstatus_OFF_fixationcalc_OFF_Sb_1.0000_deldist_point_bendist_exponential_mub_0.0000_chromnum_23_N0_2000_mud_" + str(ud) + "_L_200_seed_24_Sd_" + str(sd) + "0000/rawdataforNxtimesteps20000popsize2000mutrate" + str(ud) + "chromsize200chromnum23benmutrate0.0000Sb1.0000.txt"
         
 
